@@ -9,6 +9,7 @@ const request =
 void main() async {
   runApp(MaterialApp(
       home: Home(),
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           hintColor: Colors.amber,
           primaryColor: Colors.white,
@@ -79,7 +80,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(" \$\$\$ Conversor \$\$\$ "),
+        title: Text("Conversor de Moedas - \$\$\$ "),
         backgroundColor: Colors.amber,
         centerTitle: true,
       ),
@@ -113,8 +114,11 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Icon(Icons.monetization_on,
-                          size: 150.0, color: Colors.amber),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
+                        child: Icon(Icons.monetization_on,
+                            size: 150.0, color: Colors.amber),
+                      ),
                       buildTextField(
                           "Reais", "R\$", realController, _realChanged),
                       Divider(),
