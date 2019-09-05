@@ -13,3 +13,7 @@ Programas desenvolvidos em Flutter:
 
 ### Projeto 04
 - Conversor de Moedas
+
+### Projeto 05
+- Lista de Tarefas 2
+
