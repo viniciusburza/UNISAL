@@ -17,3 +17,6 @@ Programas desenvolvidos em Flutter:
 ### Projeto 05
 - Lista de Tarefas 2
 
+### Projeto 06
+- Buscador de GIFs
+
