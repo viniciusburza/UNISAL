@@ -20,3 +20,7 @@ Programas desenvolvidos em Flutter:
 ### Projeto 06
 - Buscador de GIFs
 
+### Projeto 07
+- Agenda de Contatos
+
+
