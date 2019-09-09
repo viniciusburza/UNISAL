@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lista_de_tarefas/helpers/task_helper.dart';
 import 'package:lista_de_tarefas/models/task.dart';
@@ -42,7 +45,8 @@ class _HomePageState extends State<HomePage> {
         child: _loading ? CircularProgressIndicator() : Text("Sem tarefas!"),
       );
     } else {
-      return ListView.builder(
+      return ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: _buildTaskItemSlidable,
         itemCount: _taskList.length,
       );
@@ -51,17 +55,25 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildTaskItem(BuildContext context, int index) {
     final task = _taskList[index];
-    return CheckboxListTile(
-      value: task.isDone,
-      title: Text(task.title),
-      subtitle: Text(task.description),
-      onChanged: (bool isChecked) {
-        setState(() {
-          task.isDone = isChecked;
-        });
+    return ListTileTheme(
+      contentPadding: EdgeInsets.only(left: 3.0, right: 15.0),
+      child: CheckboxListTile(
+        activeColor: Colors.blue,
+        value: task.isDone,
+        title: Text(task.title),
+        subtitle: Text(task.description),
+        secondary: Container(
+          constraints: BoxConstraints.expand(width: 7.0),
+          color: Colors.green,
+        ),
+        onChanged: (bool isChecked) {
+          setState(() {
+            task.isDone = isChecked;
+          });
 
-        _helper.update(task);
-      },
+          _helper.update(task);
+        },
+      ),
     );
   }
 
