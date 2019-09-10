@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int block;
   List<Task> _taskList = [];
   TaskHelper _helper = TaskHelper();
   bool _loading = true;
@@ -29,10 +30,49 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  double _percent() {
+    int total = _taskList.length;
+    int isDone = _taskList.where((t) => t.isDone).length;
+    return isDone / total;
+  }
+
+  String _namePercent() {
+    int total = _taskList.length;
+    int isDone = _taskList.where((t) => t.isDone).length;
+    double result = (isDone / total) * 100;
+    return result.isNaN ? '0.0' : result.toStringAsFixed(1).toString();
+  }
+
+  double _corPercent() {
+    int total = _taskList.length;
+    int isDone = _taskList.where((t) => t.isDone).length;
+    double result = (isDone / total) * 100;
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lista de Tarefas')),
+      appBar: AppBar(
+        title: Text('Lista de Tarefas'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: CircularPercentIndicator(
+              radius: 50.0,
+              lineWidth: 5.0,
+              percent: _percent(),
+              backgroundColor: Colors.grey,
+              center: Text(_namePercent()),
+              progressColor: _corPercent() <= 25
+                  ? Colors.red
+                  : _corPercent() <= 50
+                      ? Colors.orange
+                      : _corPercent() <= 75 ? Colors.yellow : Colors.green,
+            ),
+          )
+        ],
+      ),
       floatingActionButton:
           FloatingActionButton(child: Icon(Icons.add), onPressed: _addNewTask),
       body: _buildTaskList(),
@@ -63,8 +103,8 @@ class _HomePageState extends State<HomePage> {
         title: Text(task.title),
         subtitle: Text(task.description),
         secondary: Container(
-          constraints: BoxConstraints.expand(width: 7.0),
-          color: Colors.green,
+          constraints: BoxConstraints.expand(width: 8.0),
+          color: task.getPriorityColor(),
         ),
         onChanged: (bool isChecked) {
           setState(() {
@@ -96,6 +136,9 @@ class _HomePageState extends State<HomePage> {
           color: Colors.red,
           icon: Icons.delete,
           onTap: () {
+            setState(() {
+              block = 0;
+            });
             _deleteTask(deletedTask: _taskList[index], index: index);
           },
         ),
@@ -144,10 +187,13 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          setState(() {
-            _taskList.insert(index, deletedTask);
-            _helper.update(deletedTask);
-          });
+          if (block < 1) {
+            setState(() {
+              block++;
+              _taskList.insert(index, deletedTask);
+              _helper.update(deletedTask);
+            });
+          }
         },
       ),
     )..show(context);

@@ -19,18 +19,18 @@ class TaskHelper {
       return _db;
     }
   }
-
   Future<Database> initDb() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, "todo_list.db");
 
     return openDatabase(path, version: 1,
-        onCreate: (Database db, int newerVersion) async {
+        onCreate: (Database db, int newerVersion) async { 
       await db.execute("CREATE TABLE task("
           "id INTEGER PRIMARY KEY, "
           "title TEXT, "
           "description TEXT, "
-          "isDone INTEGER)");
+          "isDone INTEGER, "
+          "priority INTEGER)");
     });
   }
 
@@ -54,7 +54,7 @@ class TaskHelper {
   Future<Task> getById(int id) async {
     Database database = await db;
     List<Map> maps = await database.query('task',
-        columns: ['id', 'title', 'description', 'isDone'],
+        columns: ['id', 'title', 'description', 'isDone', 'priority'],
         where: 'id = ?',
         whereArgs: [id]);
 
