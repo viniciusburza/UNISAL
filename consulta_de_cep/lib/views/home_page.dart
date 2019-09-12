@@ -2,6 +2,7 @@ import 'package:consulta_de_cep/services/via_cep.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:consulta_de_cep/models/result_cep.dart';
+import 'package:share/share.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +24,10 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _giaController = TextEditingController();
 
   void _changeTheme() {
-    DynamicTheme.of(context).setBrightness(Theme.of(context).brightness == Brightness.dark? Brightness.light: Brightness.dark);
+    DynamicTheme.of(context).setBrightness(
+        Theme.of(context).brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark);
   }
 
   @override
@@ -34,9 +38,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.yellow,
         actions: <Widget>[
           IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                if (result.cep != null && _keyForm.currentState.validate()) {
+                  Share.share(result.cep);
+                }
+              }),
+          IconButton(
             icon: Icon(Icons.lightbulb_outline),
             onPressed: _changeTheme,
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -54,8 +65,70 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           _buildTextFormField(),
           _buildRaisedButton(),
-          _buildAnswerTextFormField("logradouro", _logradouroController),
-          _buildAnswerTextFormField("Complemento", _complementoController),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              elevation: 5,
+              child: Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    _buildAnswerTextFormField(
+                        "Logradouro", _logradouroController),
+                    _buildAnswerTextFormField(
+                        "Complemento", _complementoController),
+                    _buildAnswerTextFormField("Bairro", _bairroController),
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          flex: 4,
+                          child: _buildAnswerTextFormField(
+                              "Localidade", _localidadeController),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: _buildAnswerTextFormField("UF", _ufController),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          flex: 4,
+                          child: _buildAnswerTextFormField(
+                              "Unidade", _unidadeController),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Flexible(
+                          flex: 3,
+                          child:
+                              _buildAnswerTextFormField("GIA", _giaController),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Flexible(
+                          flex: 3,
+                          child: _buildAnswerTextFormField(
+                              "IBGE", _ibgeController),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -76,6 +149,13 @@ class _HomePageState extends State<HomePage> {
           result = await ViaCep.fetchCep(cep: _cepController.text);
           setState(() {
             _logradouroController.text = result.logradouro.toString();
+            _complementoController.text = result.complemento.toString();
+            _bairroController.text = result.bairro.toString();
+            _localidadeController.text = result.localidade.toString();
+            _ufController.text = result.uf.toString();
+            _unidadeController.text = result.unidade.toString();
+            _ibgeController.text = result.ibge.toString();
+            _giaController.text = result.gia.toString();
           });
         }
         setState(() {
@@ -115,7 +195,7 @@ class _HomePageState extends State<HomePage> {
       String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: TextFormField(
+      child: TextField(
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
