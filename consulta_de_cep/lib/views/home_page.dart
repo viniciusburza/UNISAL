@@ -34,8 +34,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.indigo,
         title: Text("Consulta de CEP"),
-        backgroundColor: Colors.yellow,
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.share),
@@ -140,7 +140,6 @@ class _HomePageState extends State<HomePage> {
           ? _buildCircularProgressIndicatorInRaisedButton()
           : Text("Consultar"),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      color: Colors.yellow,
       onPressed: () async {
         if (_keyForm.currentState.validate()) {
           setState(() {
@@ -170,8 +169,7 @@ class _HomePageState extends State<HomePage> {
       height: 15.0,
       width: 15.0,
       child: CircularProgressIndicator(
-        backgroundColor: Colors.black,
-      ),
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
     );
   }
 
@@ -182,7 +180,7 @@ class _HomePageState extends State<HomePage> {
         controller: _cepController,
         decoration: InputDecoration(
           labelText: "Digite um CEP",
-          labelStyle: TextStyle(fontSize: 18, color: Colors.black),
+          labelStyle: TextStyle(fontSize: 18),
         ),
         validator: (text) {
           return text.length != 8 ? "Digite um CEP válido" : null;
@@ -199,7 +197,7 @@ class _HomePageState extends State<HomePage> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(fontSize: 18, color: Colors.black),
+          labelStyle: TextStyle(fontSize: 18),
         ),
       ),
     );
