@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:consulta_de_cep/services/via_cep.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:consulta_de_cep/models/result_cep.dart';
 import 'package:share/share.dart';
+import 'package:flushbar/flushbar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -141,27 +144,53 @@ class _HomePageState extends State<HomePage> {
           : Text("Consultar"),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       onPressed: () async {
+        setState(() {
+          _logradouroController.text = "";
+          _complementoController.text = "";
+          _bairroController.text = "";
+          _localidadeController.text = "";
+          _ufController.text = "";
+          _unidadeController.text = "";
+          _ibgeController.text = "";
+          _giaController.text = "";
+        });
         if (_keyForm.currentState.validate()) {
           setState(() {
             _loading = true;
           });
-          result = await ViaCep.fetchCep(cep: _cepController.text);
-          setState(() {
-            _logradouroController.text = result.logradouro.toString();
-            _complementoController.text = result.complemento.toString();
-            _bairroController.text = result.bairro.toString();
-            _localidadeController.text = result.localidade.toString();
-            _ufController.text = result.uf.toString();
-            _unidadeController.text = result.unidade.toString();
-            _ibgeController.text = result.ibge.toString();
-            _giaController.text = result.gia.toString();
-          });
+          try {
+            result = await ViaCep.fetchCep(cep: _cepController.text);
+            setState(() {
+              _logradouroController.text = result.logradouro.toString();
+              _complementoController.text = result.complemento.toString();
+              _bairroController.text = result.bairro.toString();
+              _localidadeController.text = result.localidade.toString();
+              _ufController.text = result.uf.toString();
+              _unidadeController.text = result.unidade.toString();
+              _ibgeController.text = result.ibge.toString();
+              _giaController.text = result.gia.toString();
+            });
+          } catch (e) {
+            _buildFlushBar(e);
+          }
         }
         setState(() {
           _loading = false;
         });
       },
     );
+  }
+
+  Widget _buildFlushBar(e) {
+    return Flushbar(
+      title: "Erro!",
+      message: e.toString(),
+      margin: EdgeInsets.all(8),
+      borderRadius: 8,
+      backgroundColor: Colors.redAccent,
+      borderColor: Colors.black,
+      duration: Duration(seconds: 5),
+    )..show(context);
   }
 
   Container _buildCircularProgressIndicatorInRaisedButton() {

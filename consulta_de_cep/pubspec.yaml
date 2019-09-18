@@ -26,6 +26,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   dynamic_theme: ^1.0.0
   share: ^0.6.2+1
+  flushbar: ^1.9.0
 
 dev_dependencies:
   flutter_test:
