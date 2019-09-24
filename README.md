@@ -23,4 +23,8 @@ Programas desenvolvidos em Flutter:
 ### Projeto 07
 - Agenda de Contatos
 
+### Projeto 08
+- Consulta de CEP
+
+
 
