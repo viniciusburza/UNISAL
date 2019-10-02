@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text('Chatbot - Rubby'),
+        title: Text('Chatbot - League of Legends'),
       ),
       body: Column(
         children: <Widget>[
@@ -40,7 +40,8 @@ class _HomePageState extends State<HomePage> {
       child: ListView.builder(
         padding: EdgeInsets.all(8.0),
         reverse: true,
-        itemBuilder: (_, int index) => ChatMessageListItem(chatMessage: _messageList[index]),
+        itemBuilder: (_, int index) =>
+            ChatMessageListItem(chatMessage: _messageList[index]),
         itemCount: _messageList.length,
       ),
     );
@@ -49,13 +50,15 @@ class _HomePageState extends State<HomePage> {
   Future _dialogFlowRequest({String query}) async {
     // Adiciona uma mensagem temporária na lista
     _addMessage(
-        name: 'Rubby',
+        name: 'RiotGames',
         text: 'Escrevendo...',
         type: ChatMessageType.received);
 
     // Faz a autenticação com o serviço, envia a mensagem e recebe uma resposta da Intent
-    AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/credentials.json").build();
-    Dialogflow dialogflow = Dialogflow(authGoogle: authGoogle, language: "pt-BR");
+    AuthGoogle authGoogle =
+        await AuthGoogle(fileJson: "assets/credentials.json").build();
+    Dialogflow dialogflow =
+        Dialogflow(authGoogle: authGoogle, language: "pt-BR");
     AIResponse response = await dialogflow.detectIntent(query);
 
     // remove a mensagem temporária
@@ -65,7 +68,7 @@ class _HomePageState extends State<HomePage> {
 
     // adiciona a mensagem com a resposta do DialogFlow
     _addMessage(
-        name: 'Rubby',
+        name: 'RiotGames',
         text: response.getMessage() ?? '',
         type: ChatMessageType.received);
   }
@@ -73,30 +76,35 @@ class _HomePageState extends State<HomePage> {
   // Envia uma mensagem com o padrão a direita
   void _sendMessage({String text}) {
     _controllerText.clear();
-    _addMessage(name: 'Vinicius Burza', text: text, type: ChatMessageType.sent);
+    _addMessage(name: 'Invocador', text: text, type: ChatMessageType.sent);
   }
 
   // Adiciona uma mensagem na lista de mensagens
   void _addMessage({String name, String text, ChatMessageType type}) {
-    var message = ChatMessage(
-        text: text, name: name, type: type);
+    var message = ChatMessage(text: text, name: name, type: type);
     setState(() {
       _messageList.insert(0, message);
     });
 
     if (type == ChatMessageType.sent) {
       // Envia a mensagem para o chatbot e aguarda sua resposta
-      _dialogFlowRequest(query: message.text);  
+      _dialogFlowRequest(query: message.text);
     }
   }
 
   // Campo para escrever a mensagem
   Widget _buildTextField() {
     return new Flexible(
-      child: new TextField(
-        controller: _controllerText,
-        decoration: new InputDecoration.collapsed(
-          hintText: "Enviar mensagem",
+      child: Container(
+        padding: EdgeInsets.all(6.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            border: Border.all(width: 1.0)),
+        child: new TextField(
+          controller: _controllerText,
+          decoration: new InputDecoration.collapsed(
+            hintText: "Enviar mensagem",
+          ),
         ),
       ),
     );
