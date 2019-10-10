@@ -1,10 +1,9 @@
 import 'package:chatbot/models/chat_message.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ChatMessageListItem extends StatelessWidget {
   final ChatMessage chatMessage;
-  DateFormat dateFormat = DateFormat("HH:mm");
+  
 
   ChatMessageListItem({this.chatMessage});
 
@@ -27,7 +26,7 @@ class ChatMessageListItem extends StatelessWidget {
         trailing: CircleAvatar(child: Text(chatMessage.name.toUpperCase()[0])),
         title: Text(chatMessage.name, textAlign: TextAlign.right),
         subtitle: Text(chatMessage.text, textAlign: TextAlign.right),
-        leading: Text(dateFormat.format(DateTime.now())),
+        leading: Text(chatMessage.date, textAlign: TextAlign.left),
       ),
     );
   }
@@ -44,7 +43,7 @@ class ChatMessageListItem extends StatelessWidget {
         leading: CircleAvatar(child: Text(chatMessage.name.toUpperCase()[0])),
         title: Text(chatMessage.name, textAlign: TextAlign.left),
         subtitle: Text(chatMessage.text, textAlign: TextAlign.left),
-        trailing: Text(dateFormat.format(DateTime.now())),
+        trailing: Text(chatMessage.date, textAlign: TextAlign.left),
       ),
     );
   }

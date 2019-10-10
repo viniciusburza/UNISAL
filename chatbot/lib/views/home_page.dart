@@ -2,6 +2,7 @@ import 'package:chatbot/models/chat_message.dart';
 import 'package:chatbot/widgets/chat_message_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _messageList = <ChatMessage>[];
   final _controllerText = new TextEditingController();
+  DateFormat dateFormat = DateFormat("HH:mm");
 
   @override
   void dispose() {
@@ -52,7 +54,8 @@ class _HomePageState extends State<HomePage> {
     _addMessage(
         name: 'RiotGames',
         text: 'Escrevendo...',
-        type: ChatMessageType.received);
+        type: ChatMessageType.received,
+        date: dateFormat.format(DateTime.now()).toString());
 
     // Faz a autenticação com o serviço, envia a mensagem e recebe uma resposta da Intent
     AuthGoogle authGoogle =
@@ -70,18 +73,19 @@ class _HomePageState extends State<HomePage> {
     _addMessage(
         name: 'RiotGames',
         text: response.getMessage() ?? '',
-        type: ChatMessageType.received);
+        type: ChatMessageType.received,
+        date:  dateFormat.format(DateTime.now()).toString());
   }
 
   // Envia uma mensagem com o padrão a direita
   void _sendMessage({String text}) {
     _controllerText.clear();
-    _addMessage(name: 'Invocador', text: text, type: ChatMessageType.sent);
+    _addMessage(name: 'Invocador', text: text, type: ChatMessageType.sent, date: dateFormat.format(DateTime.now()).toString());
   }
 
   // Adiciona uma mensagem na lista de mensagens
-  void _addMessage({String name, String text, ChatMessageType type}) {
-    var message = ChatMessage(text: text, name: name, type: type);
+  void _addMessage({String name, String text, ChatMessageType type, String date}) {
+    var message = ChatMessage(text: text, name: name, type: type, date: date);
     setState(() {
       _messageList.insert(0, message);
     });
