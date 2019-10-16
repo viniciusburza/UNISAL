@@ -31,6 +31,7 @@ class Auth {
 
   static Future<bool> checkUserExist(String userID) async {
     try {
+      print('Check user exist $userID');
       bool exist = false;
       await Firestore.instance.document('users/$userID').get().then((document) {
         exist = document.exists;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lost_and_found/services/auth.dart';
+import 'package:lost_and_found/views/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
   static const String routeName = '/signin';
@@ -41,12 +42,15 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _showEmailTextField() {
-    return TextField(
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
-        hintText: 'Email',
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: TextField(
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
+          hintText: 'Email',
+        ),
       ),
     );
   }
@@ -58,17 +62,20 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _showPasswordTextField() {
-    return TextField(
-      controller: _passwordController,
-      obscureText: _passwordVisible,
-      decoration: InputDecoration(
-          hintText: 'Senha',
-          prefixIcon: Icon(Icons.lock, color: Colors.deepPurple),
-          suffixIcon: IconButton(
-              icon: _passwordVisible
-                  ? Icon(Icons.visibility, color: Colors.deepPurple)
-                  : Icon(Icons.visibility_off, color: Colors.deepPurple),
-              onPressed: _toggleVisibility)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: TextField(
+        controller: _passwordController,
+        obscureText: _passwordVisible,
+        decoration: InputDecoration(
+            hintText: 'Senha',
+            prefixIcon: Icon(Icons.lock, color: Colors.deepPurple),
+            suffixIcon: IconButton(
+                icon: _passwordVisible
+                    ? Icon(Icons.visibility, color: Colors.deepPurple)
+                    : Icon(Icons.visibility_off, color: Colors.deepPurple),
+                onPressed: _toggleVisibility)),
+      ),
     );
   }
 
@@ -96,7 +103,14 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  void _signUp() {
+    Navigator.of(context).pushReplacementNamed(SignUpPage.routeName);
+  }
+
   Widget _showSignUpButton() {
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 32.0),
+      child: FlatButton(child: Text('Não possui uma conta ? Cadastre-se!'), onPressed: _signUp),
+    );
   }
 }
