@@ -5,6 +5,7 @@ import 'package:lost_and_found/views/home_page.dart';
 import 'package:lost_and_found/views/profile_page.dart';
 import 'package:lost_and_found/views/sign_in_page.dart';
 import 'package:lost_and_found/views/use_term_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -12,6 +13,38 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  String _userName;
+  String _userEmail;
+  @override
+  void initState() {
+    super.initState();
+    _getPreferences();
+  }
+    Future _getPreferences() async{
+      final prefs = await SharedPreferences.getInstance();
+      String name = "";
+      String email = "";
+      if (prefs.containsKey("userName"))
+        name = prefs.getString("userName");
+      if (prefs.containsKey("userEmail"))
+        email = prefs.getString("userEmail");
+      setState(() {
+     _userName = name;
+     _userEmail = email; 
+    });
+    }
+
+  Widget _showHeader() {
+    return UserAccountsDrawerHeader(
+      accountName: Text(_userName),
+      accountEmail: Text(_userEmail),
+      currentAccountPicture: CircleAvatar(
+        backgroundColor: Colors.red,
+        child: Text(_userName[0])
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -73,14 +106,5 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  Widget _showHeader() {
-    return UserAccountsDrawerHeader(
-      accountName: Text("Vinicius Burza"),
-      accountEmail: Text("vi-burza@hotmail.com"),
-      currentAccountPicture: CircleAvatar(
-        backgroundColor: Colors.red,
-        child: Text("V"),
-      ),
-    );
-  }
+  
 }

@@ -48,7 +48,10 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: _nameController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.person, color: Colors.deepPurple),
+          hintStyle: TextStyle(color: Colors.black),
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1.25)),
+          prefixIcon: Icon(Icons.person, color: Colors.purple),
           hintText: 'Nome',
         ),
       ),
@@ -62,7 +65,10 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
+          hintStyle: TextStyle(color: Colors.black),
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1.25)),
+          prefixIcon: Icon(Icons.email, color: Colors.purple),
           hintText: 'Email',
         ),
       ),
@@ -76,8 +82,11 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: _passwordController,
         obscureText: true,
         decoration: InputDecoration(
+            hintStyle: TextStyle(color: Colors.black),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black, width: 1.25)),
             hintText: 'Senha',
-            prefixIcon: Icon(Icons.lock, color: Colors.deepPurple)),
+            prefixIcon: Icon(Icons.lock, color: Colors.purple)),
       ),
     );
   }
@@ -89,8 +98,11 @@ class _SignUpPageState extends State<SignUpPage> {
         controller: _confirmPasswordController,
         obscureText: true,
         decoration: InputDecoration(
+            hintStyle: TextStyle(color: Colors.black),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black, width: 1.25)),
             hintText: 'Confirmar Senha',
-            prefixIcon: Icon(Icons.lock, color: Colors.deepPurple)),
+            prefixIcon: Icon(Icons.lock, color: Colors.purple)),
       ),
     );
   }
@@ -117,6 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Text('Registrar', style: TextStyle(color: Colors.white)),
         onPressed: _signUp,
         color: Colors.purple,
+        elevation: 5.0,
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(30.0)),
       ),
@@ -129,6 +142,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _showSignInButton() {
     return FlatButton(
-        child: Text('Já possui uma conta ? Acesse Aqui!'), onPressed: _signIn);
+        child: Text('Já possui uma conta ? Acesse Aqui!',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        onPressed: _signIn);
   }
 }
