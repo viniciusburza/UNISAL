@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "25223507431",
+    "firebase_url": "https://lol-do-milhao.firebaseio.com",
+    "project_id": "lol-do-milhao",
+    "storage_bucket": "lol-do-milhao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25223507431:android:9fe25682ba699ec56de142",
+        "android_client_info": {
+          "package_name": "com.example.lol_do_milhao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25223507431-pa10i3sjjloaondp6v7jas1j5cfas6b4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS1ChY3XzJfq1cyIP-0wO68KDKQn2Wtww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25223507431-pa10i3sjjloaondp6v7jas1j5cfas6b4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

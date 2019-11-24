@@ -1,10 +1,12 @@
 import 'dart:math';
-
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lol_do_milhao/services/auth.dart';
 import 'package:lol_do_milhao/views/home_page.dart';
 import 'dart:ui' as ui;
 import 'package:lol_do_milhao/views/sign_up_page.dart';
+import 'package:lol_do_milhao/utils/validator.dart';
 
 class SignInPage extends StatefulWidget {
   static const String routeName = '/signin';
@@ -14,10 +16,11 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final _formKey = new GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _passwordVisible = false;
-  int background = Random(1).nextInt(33-1);
+  int background = Random().nextInt(32);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,8 @@ class _SignInPageState extends State<SignInPage> {
               Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("images/background_$background"),
+                          image: AssetImage(
+                              "images/background_${background + 1}.jpg"),
                           fit: BoxFit.cover))),
               BackdropFilter(
                 filter: ui.ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
@@ -37,19 +41,22 @@ class _SignInPageState extends State<SignInPage> {
                   color: Colors.black.withOpacity(0.6),
                 ),
               ),
-              Container(
-                child: Center(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _showEmailTextField(),
-                        _showPasswordTextField(),
-                        _showSignInButton(),
-                        _showSignUpButton(),
-                      ],
+              Form(
+                key: _formKey,
+                child: Container(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _showEmailTextField(),
+                          _showPasswordTextField(),
+                          _showSignInButton(),
+                          _showSignUpButton(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -64,7 +71,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _showEmailTextField() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: TextField(
+      child: TextFormField(
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         style: TextStyle(
@@ -85,6 +92,7 @@ class _SignInPageState extends State<SignInPage> {
                 Icon(Icons.email, color: Color.fromRGBO(37, 160, 168, 1.0)),
             hintText: 'Email',
             hintStyle: TextStyle(color: Colors.white)),
+        validator: (value) => Validator.validateEmail(value),
       ),
     );
   }
@@ -98,7 +106,8 @@ class _SignInPageState extends State<SignInPage> {
   Widget _showPasswordTextField() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: TextField(
+      child: TextFormField(
+        keyboardType: TextInputType.visiblePassword,
         controller: _passwordController,
         obscureText: _passwordVisible,
         style: TextStyle(
@@ -128,8 +137,34 @@ class _SignInPageState extends State<SignInPage> {
                     : Icon(Icons.visibility_off,
                         color: Color.fromRGBO(37, 160, 168, 1.0)),
                 onPressed: _toggleVisibility)),
+        validator: (value) => Validator.validatePassword(value),
       ),
     );
+  }
+
+  Future<void> _signIn() async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      final email = _emailController.text;
+      final password = _passwordController.text;
+
+      await Auth.signIn(email, password)
+          .then(_onSignInSuccess)
+          .catchError((error) {
+        final erro = Auth.getExceptionText(error);
+        Flushbar(
+          title: 'Erro',
+          message: erro.toString(),
+          duration: Duration(seconds: 3),
+        )..show(context);
+      });
+    }
+  }
+
+  Future _onSignInSuccess(String userId) async {
+    final user = await Auth.getUser(userId);
+    await Auth.storeUserLocal(user);
+    Navigator.pushReplacementNamed(context, HomePage.routeName);
   }
 
   Widget _showSignInButton() {
@@ -141,9 +176,7 @@ class _SignInPageState extends State<SignInPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           child: Text("Login", style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed(HomePage.routeName);
-          }),
+          onPressed: _signIn),
     );
   }
 

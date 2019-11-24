@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lol_do_milhao/views/home_page.dart';
+import 'package:lol_do_milhao/views/root_page.dart';
 import 'package:lol_do_milhao/views/sign_in_page.dart';
 import 'package:lol_do_milhao/views/sign_up_page.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LOL do Milhão',
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
       routes: <String, WidgetBuilder>{
+        RootPage.routeName: (context) => new RootPage(),
         HomePage.routeName: (BuildContext context) => HomePage(),
         SignInPage.routeName: (BuildContext context) => SignInPage(),
         SignUpPage.routeName: (BuildContext context) => SignUpPage(),
@@ -35,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       children: <Widget>[
         SplashScreen(
           seconds: 5,
-          navigateAfterSeconds: SignInPage(),
+          navigateAfterSeconds: RootPage(),
           backgroundColor: Colors.white,
           loaderColor: Color.fromRGBO(170, 128, 52, 1.0),
           gradientBackground: LinearGradient(
