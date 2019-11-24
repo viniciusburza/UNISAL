@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:lol_do_milhao/views/quiz_page.dart';
 import 'package:lol_do_milhao/widgets/custom_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -67,7 +68,9 @@ class _HomePageState extends State<HomePage> {
                             child: Text("Jogar",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 25)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pushReplacementNamed(QuizPage.routeName);
+                            },
                           ),
                         ),
                       ),

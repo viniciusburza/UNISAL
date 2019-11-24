@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lol_do_milhao/views/home_page.dart';
+import 'package:lol_do_milhao/views/quiz_finished_page.dart';
+import 'package:lol_do_milhao/views/quiz_page.dart';
 import 'package:lol_do_milhao/views/root_page.dart';
 import 'package:lol_do_milhao/views/sign_in_page.dart';
 import 'package:lol_do_milhao/views/sign_up_page.dart';
@@ -15,7 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        RootPage.routeName: (context) => new RootPage(),
+        RootPage.routeName: (context) => RootPage(),
+        QuizFinishedPage.routeName: (BuildContext context) => QuizFinishedPage(),
+        QuizPage.routeName: (BuildContext context) => QuizPage(),
         HomePage.routeName: (BuildContext context) => HomePage(),
         SignInPage.routeName: (BuildContext context) => SignInPage(),
         SignUpPage.routeName: (BuildContext context) => SignUpPage(),
