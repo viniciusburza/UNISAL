@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:lol_do_milhao/views/quiz_finished_page.dart';
+import 'package:lol_do_milhao/models/questions.dart';
+import 'package:lol_do_milhao/utils/service.dart';
+import 'package:lol_do_milhao/views/home_page.dart';
 import 'package:lol_do_milhao/widgets/custom_drawer.dart';
 
 class QuizPage extends StatefulWidget {
@@ -12,6 +14,29 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   int background = Random().nextInt(32);
+  int correctAnswers;
+  List<Question> questions = [];
+  int currentQuestion = 0;
+  bool loading;
+  bool endQuiz = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loading = true;
+    correctAnswers = 0;
+    getAllQuestions();
+  }
+
+  void getAllQuestions() async {
+    questions = await Service.getAllQuestions();
+    questions.shuffle();
+    currentQuestion = 0;
+    print(questions.length);
+    setState(() {
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +49,11 @@ class _QuizPageState extends State<QuizPage> {
 
   Widget _buildAppBar() {
     return AppBar(
-      title: Text('Pergunta 1/15'),
+      title: endQuiz
+          ? Text("Fim do Quiz!",
+              style: TextStyle(color: Colors.white, fontSize: 20))
+          : Text(
+              'Pergunta: ${currentQuestion + 1} / ${questions?.length ?? 0}'),
       centerTitle: true,
       backgroundColor: Color.fromRGBO(3, 69, 79, 1.0),
     );
@@ -47,143 +76,169 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.black.withOpacity(0.6),
               ),
             ),
-            Container(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      _buildQuestion(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7.0),
-                        child: Center(
-                          child: Container(
-                            height: 50,
-                            width: 300,
-                            child: RaisedButton(
-                              color: Color.fromRGBO(3, 69, 79, 1.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(170, 128, 52, 1.0),
-                                      width: 3.5)),
-                              child: Text("Resposta 1",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(
-                                    QuizFinishedPage.routeName);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7.0),
-                        child: Center(
-                          child: Container(
-                            height: 50,
-                            width: 300,
-                            child: RaisedButton(
-                              color: Color.fromRGBO(3, 69, 79, 1.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(170, 128, 52, 1.0),
-                                      width: 3.5)),
-                              child: Text("Resposta 2",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(
-                                    QuizFinishedPage.routeName);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7.0),
-                        child: Center(
-                          child: Container(
-                            height: 50,
-                            width: 300,
-                            child: RaisedButton(
-                              color: Color.fromRGBO(3, 69, 79, 1.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(170, 128, 52, 1.0),
-                                      width: 3.5)),
-                              child: Text("Resposta 3",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(
-                                    QuizFinishedPage.routeName);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7.0),
-                        child: Center(
-                          child: Container(
-                            height: 50,
-                            width: 300,
-                            child: RaisedButton(
-                              color: Color.fromRGBO(3, 69, 79, 1.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  side: BorderSide(
-                                      color: Color.fromRGBO(170, 128, 52, 1.0),
-                                      width: 3.5)),
-                              child: Text("Resposta 4",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
-                              onPressed: () {
-                                Navigator.of(context).pushReplacementNamed(
-                                    QuizFinishedPage.routeName);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            loading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : _buildQuestionContainer(),
           ],
         ),
       ],
     );
   }
-}
 
-Widget _buildQuestion() {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 10.0),
-    child: Container(
-      height: 200,
-      width: 300,
-      child: Card(
-        color: Color.fromRGBO(3, 69, 79, 1.0),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0),
-            side: BorderSide(
-                color: Color.fromRGBO(170, 128, 52, 1.0), width: 3.5)),
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.all(20.0),
-            child: Text("Pergunta",
-                style: TextStyle(color: Colors.white, fontSize: 20)),
+  Container _buildQuestionContainer() {
+    return Container(
+      child: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(20.0),
+          child: _currentScreen(),
+        ),
+      ),
+    );
+  }
+
+  Widget _currentScreen() {
+    return endQuiz
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[_buildInformation(), _buildFinal()],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildQuestion(),
+              _buildAnswer(answer: questions[currentQuestion].answer1),
+              _buildAnswer(answer: questions[currentQuestion].answer2),
+              _buildAnswer(answer: questions[currentQuestion].answer3),
+              _buildAnswer(answer: questions[currentQuestion].answer4),
+            ],
+          );
+  }
+
+  Widget _buildQuestion() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Container(
+        height: 200,
+        width: 300,
+        child: Card(
+          color: Color.fromRGBO(3, 69, 79, 1.0),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              side: BorderSide(
+                  color: Color.fromRGBO(170, 128, 52, 1.0), width: 3.5)),
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.all(20.0),
+              child: Text("${questions[currentQuestion].question}",
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
+
+  Widget _buildAnswer({String answer}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7.0),
+      child: Center(
+        child: Container(
+          height: 50,
+          width: 300,
+          child: RaisedButton(
+            color: Color.fromRGBO(3, 69, 79, 1.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+                side: BorderSide(
+                    color: Color.fromRGBO(170, 128, 52, 1.0), width: 3.5)),
+            child: Text("$answer",
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+            onPressed: () {
+              if (currentQuestion == questions.length - 1) {
+                if (answer == questions[currentQuestion].correct) {
+                  setState(() {
+                    correctAnswers++;
+                  });
+                }
+                setState(() {
+                  endQuiz = true;
+                });
+              } else {
+                setState(() {
+                  if (answer == questions[currentQuestion].correct) {
+                    correctAnswers++;
+                  }
+                  currentQuestion++;
+                });
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFinal() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7.0),
+      child: Center(
+        child: Container(
+          height: 50,
+          width: 300,
+          child: RaisedButton(
+            color: Color.fromRGBO(3, 69, 79, 1.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+                side: BorderSide(
+                    color: Color.fromRGBO(170, 128, 52, 1.0), width: 3.5)),
+            child: Text("Finalizar!",
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInformation() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Container(
+        height: 300,
+        width: 300,
+        child: Card(
+          color: Color.fromRGBO(3, 69, 79, 1.0),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              side: BorderSide(
+                  color: Color.fromRGBO(170, 128, 52, 1.0), width: 3.5)),
+          child: Container(
+            margin: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                      "Você acertou $correctAnswers de ${questions.length} perguntas!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      )),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
