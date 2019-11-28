@@ -1,20 +1,12 @@
 # Achados e Perdidos
 
-Aplicativo online de achados e perdidos usando Firebase
-
-Tutorial de criação deste app:
-
-## Como clonar e importar
-
--   Faça um fork do projeto
--   Abra o terminal do Visual Studio Code
--   Digite (troque kleberandrade pelo nome do seu usuários): git clone https://github.com/kleberandrade/lost-and-found-aulas-flutter lost-and-found
+## Aplicativo desenvolvido em Flutter
 
 ## Desafios
 
--   Melhorar o visual da tela de "SignIn" e "SignUp"
+-   Melhorar o visual da tela de "SignIn" e "SignUp" [bold][Realizado]
 -   Criar as tela de "Informações do Projeto/Autor" e "Termos de Uso"
--   Criar uma Splash Screen (ver como criar [splash screen aqui](https://medium.com/flutter-comunidade-br/criando-uma-splashscreen-utilizando-flutter-926f9b25de31))
+-   Criar uma Splash Screen (ver como criar [splash screen aqui](https://medium.com/flutter-comunidade-br/criando-uma-splashscreen-utilizando-flutter-926f9b25de31)) [bold][Realizado]
 -   Criar um ícone para o aplicativo (utilizar [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) e o [gerador de icones](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html))
 -   Criar uma nova forma de Login (Facebook, Google, Github, etc...)
 
