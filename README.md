@@ -6,7 +6,7 @@ Programas desenvolvidos em Flutter:
 
 Vinicius Burza - RA:160002079
 
-Rafael Cezar - RA:160002076
+Rafael Cezar - RA:160002078
 
 ### Projeto 01 - (Aulas Mobile)
 - Calculadora de IMC
