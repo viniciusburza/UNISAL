@@ -1,11 +1,15 @@
-# Dart
+# Aulas Mobile - UNISAL 2019
+
+Aprendizado de Dart e Flutter
+
+## Dart
 
 Programas desenvolvidos em Dart:
 
 ### Projeto 01 - (Aulas Mobile)
 - Jogo no estilo Roguelike
 
-# Flutter
+## Flutter
 
 Programas desenvolvidos em Flutter:
 
